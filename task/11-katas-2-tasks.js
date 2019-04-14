@@ -34,6 +34,67 @@
  *
  */
 function parseBankAccount(bankAccount) {
+    const num = {
+        '0': {
+            1: ' _ ',
+            2: '| |',
+            3: '|_|'
+        },
+        '1': {
+            1: '   ',
+            2: '  |',
+            3: '  |'
+        },
+        '2': {
+            1: ' _ ',
+            2: ' _|',
+            3: '|_ '
+        },
+        '3': {
+            1: ' _ ',
+            2: ' _|',
+            3: ' _|'
+        },
+        '4': {
+            1: '   ',
+            2: '|_|',
+            3: '  |'
+        },
+        '5': {
+            1: ' _ ',
+            2: '|_ ',
+            3: ' _|'
+        },
+        '6': {
+            1: ' _ ',
+            2: '|_ ',
+            3: '|_|'
+        },
+        '7': {
+            1: ' _ ',
+            2: '  |',
+            3: '  |'
+        },
+        '8': {
+            1: ' _ ',
+            2: '|_|',
+            3: '|_|'
+        },
+        '9': {
+            1: ' _ ',
+            2: '|_|',
+            3: ' _|'
+        },
+    }
+    let split = bankAccount.split('\n')
+    split = split.splice(0,3)
+    split = split.map((l)=>l.match(/.{1,3}/g));
+    let res = '';
+    for (let i = 0; i < split[0].length; i++) {
+        const k = Object.keys(num).find(key => (num[key][1] === split[0][i] && num[key][2] === split[1][i] && num[key][3] === split[2][i]))
+        res += k ? k : ''; 
+    }
+    return res
     throw new Error('Not implemented');
 }
 
@@ -63,6 +124,22 @@ function parseBankAccount(bankAccount) {
  *                                                                                                'characters.'
  */
 function* wrapText(text, columns) {
+    let line='';
+    let count = 0;
+    const arr = text.split(' ');
+    for (let i = 0; i < arr.length; i++) {
+        const el = arr[i];
+        if ((count + el.length) > columns) {
+            count = el.length + 1;
+            yield line.replace(/(.*) /, '$1');
+            line = `${el} `;
+        } else {
+            count += el.length + 1;
+            line += `${el} `;
+        }
+    }
+    yield line.replace(/(.*) /, '$1');
+    return;
     throw new Error('Not implemented');
 }
 
